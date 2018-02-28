@@ -41,6 +41,49 @@ module.exports = {
                 poi.expected_time = getExpectedTime();
                 callback(poi);
             });
+    },
+    getMatrix: function (pois,callback) {
+        var matrix = [new Array(pois.length)];
+        var promises = [];
+        for(var i=0; i<pois.length-1; i++){
+            matrix.push(new Array(pois.length));
+            for(var j=i+1; j<pois.length; j++){
+                promises.push(new Promise(function (resolve) {
+                        request(
+                            {
+                                uri:'https://maps.googleapis.com/maps/api/directions/json',
+                                qs: {
+                                    origin: `place_id:${pois[i].place_id}`,
+                                    destination:`place_id:${pois[j].place_id}`,
+                                    units:'metric',
+                                    mode:'walking',
+                                    key:'AIzaSyBjLWzGBsWZIBwBNVMCqXbjwFEzNfomR0k'
+                                },
+                                json: true
+                            }).then(function (resp) {
+                            const route=resp.routes[0];
+                            obj = {
+                                distance:route.legs[0].distance.value,
+                                duration:route.legs[0].duration.value / 60,
+                                points:route.overview_polyline.points
+                            };
+                            resolve(obj);
+                        });
+                    })
+                );
+            }
+        }
+        Promise.all(promises).then(function (values) {
+           var ind = 0;
+           for(var i=0; i<pois.length-1; i++){
+                for(var j=i+1; j<pois.length; j++){
+                    matrix[i][j]=values[ind];
+                    matrix[j][i]=values[ind];
+                    ind++;
+                }
+            }
+            callback(matrix);
+        });
     }
 };
 
