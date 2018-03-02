@@ -61,13 +61,26 @@ module.exports = {
                                 },
                                 json: true
                             }).then(function (resp) {
-                            const route=resp.routes[0];
-                            obj = {
-                                distance:route.legs[0].distance.value,
-                                duration:route.legs[0].duration.value / 60,
-                                points:route.overview_polyline.points
-                            };
-                            resolve(obj);
+                                // try {
+                                //     const route=resp.routes[0];
+                                //     obj = {
+                                //         distance:route.legs[0].distance.value,
+                                //         duration:route.legs[0].duration.value / 60,
+                                //         points:route.overview_polyline.points
+                                //     };
+                                // }catch (err){
+                                //     console.log('------------------');
+                                //     console.log(err);
+                                //     console.log('resp',resp);
+                                //     console.log('------------------');
+                                // }
+                                const route=resp.routes[0];
+                                obj = {
+                                    distance:route.legs[0].distance.value,
+                                    duration:route.legs[0].duration.value / 60,
+                                    points:route.overview_polyline.points
+                                };
+                                resolve(obj);
                         });
                     })
                 );
