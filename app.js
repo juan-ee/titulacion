@@ -9,7 +9,7 @@ app.set('view engine', 'ejs');
 // app.use(bodyParser.json()); // support json encoded bodies
 // app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
-app.listen(3000);
+app.listen(8080);
 // app.locals.title = 'My App';
 
 // app.get('/params', function (req, res) { //query params
