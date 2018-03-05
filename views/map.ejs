@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+       #map {
+        height: 800px;
+        width: 100%;
+       }
+    </style>
+  </head>
+  <body>
+    <h3>My Google Maps Demo</h3>
+    <div id="map"></div>
+    <script>
+      // function htmlDecode(input){
+      //     var e = document.createElement('div');
+      //     e.innerHTML = input;
+      //     return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+      // }
+	  function initMap() {
+	      array = <%-JSON.stringify(array)%>;
+          userLocation=array[0][0].poi.location;
+          colours=['F7FE2E','2efe6c','2ee5fe','fec32e','2efeaa'];
+          var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
+            center: userLocation
+          });
+
+          /*POSICION HOTEL*/
+            var marker = new google.maps.Marker({
+            position: userLocation,
+            map: map,
+            icon:'http://ospinas.com.co/wp-content/themes/ospinas/images/home-icon.png'
+          });
+
+          for(j in array){
+              schedule = array[j];
+              var n=1;
+              for(i=1;i<schedule.length;i++){
+                  if (schedule[i].poi) {
+                      new google.maps.Marker({
+                            position: schedule[i].poi.location,
+                            //icon: tour[j].icon,
+                            icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+n+'|'+colours[j],
+                            map: map
+                      });
+                      n++;
+                  } else if (schedule[i].route) {
+                          new google.maps.Polyline({
+                              path: google.maps.geometry.encoding.decodePath(schedule[i].route),
+                              strokeColor: "#"+colours[j],
+                              map: map
+                          });
+                  }
+
+              }
+		}								   				
+      }
+    </script>
+    <script async defer	
+    src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyBjLWzGBsWZIBwBNVMCqXbjwFEzNfomR0k&callback=initMap">
+    </script>	
+  </body>
+</html>
+
+<!-- porque alado tuyo me siento tan vulnerable; antes pensaba que era una jodida piedra que jamás sentiría amor, ahora soy un humano con una fuga tremenda de amor; tú abriste esa fuga y no sé si exista manera alguna de frenarla. En fin, tú podrías ser mi destrucción; has sido la única extravagancia que me ha sacado fuera de mis límites.-->

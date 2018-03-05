@@ -37,7 +37,6 @@ module.exports = {
                 delete poi.reviews;
                 delete poi.scope;
                 delete poi.types;
-                delete poi.types;
                 poi.expected_time = getExpectedTime();
                 callback(poi);
             });
@@ -49,30 +48,8 @@ module.exports = {
             matrix.push(new Array(pois.length));
             for(var j=i+1; j<pois.length; j++){
                 promises.push(new Promise(function (resolve) {
-                        request(
-                            {
-                                uri:'https://maps.googleapis.com/maps/api/directions/json',
-                                qs: {
-                                    origin: `place_id:${pois[i].place_id}`,
-                                    destination:`place_id:${pois[j].place_id}`,
-                                    units:'metric',
-                                    mode:'walking',
-                                    key:key
-                                    // key:'AIzaSyBjLWzGBsWZIBwBNVMCqXbjwFEzNfomR0k'
-                                    // key:'AIzaSyAgg8nvSsVsJo_fOvJB0113sJ9saV6BgEo'
-                                    // key:'AIzaSyDZJ4eK77EVxoJsUIzqUZMJgpmxJsFQvyo'
-                                    // key:'AIzaSyCfqVM0MdOINSwxu_n9Sy_nYzs29-La-zE'
-                                },
-                                json: true
-                            }).then(function (resp) {
-                                const route=resp.routes[0];
-                                obj = {
-                                    distance:route.legs[0].distance.value,
-                                    duration:route.legs[0].duration.value / 60,
-                                    points:route.overview_polyline.points
-                                };
-
-                                resolve(obj);
+                        getRoute(key,i === 0 ? `${pois[i].location.lat},${pois[i].location.lng}` :`place_id:${pois[i].place_id}`,`place_id:${pois[j].place_id}`,function (route) {
+                            resolve(route);
                         });
                     })
                 );
@@ -92,6 +69,33 @@ module.exports = {
     }
 };
 
+function getRoute(key,origin,destination,callback){
+    request(
+        {
+            uri:'https://maps.googleapis.com/maps/api/directions/json',
+            qs: {
+                origin: origin,
+                destination:destination,
+                units:'metric',
+                mode:'walking',
+                key:key
+                // key:'AIzaSyBjLWzGBsWZIBwBNVMCqXbjwFEzNfomR0k'
+                // key:'AIzaSyAgg8nvSsVsJo_fOvJB0113sJ9saV6BgEo'
+                // key:'AIzaSyDZJ4eK77EVxoJsUIzqUZMJgpmxJsFQvyo'
+                // key:'AIzaSyCfqVM0MdOINSwxu_n9Sy_nYzs29-La-zE'
+            },
+            json: true
+        }).then(function (resp) {
+            const route=resp.routes[0];
+            obj = {
+                distance:route.legs[0].distance.value,
+                duration:route.legs[0].duration.value / 60,
+                points:route.overview_polyline.points
+            };
+
+        callback(obj);
+    });
+}
 function getExpectedTime() {
     return Math.ceil(Math.random()*60+30);
 }
