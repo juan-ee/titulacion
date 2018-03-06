@@ -9,7 +9,7 @@ module.exports = {
                     location: `${location.lat},${location.lng}`,
                     radius:2000,
                     type:type,
-                    name:type,
+                    // name:type,
                     // key:'AIzaSyD4qbkCAmjG4kObzEXT9gnzPGHel3Tuk44',
                     key:'AIzaSyB8-GllalpxSUubV2qgh0rhba-wsKE5t3c'
                 },

@@ -55,7 +55,19 @@ app.get('/pois',function (req,res) {
         );
     }
     Promise.all(promises).then(function (results) {
+        // results.forEach(function (pois, index, array) {
+        //     pois.sort(function(a, b) {
+        //         return b.rating - a.rating;
+        //     });
+        //     array[index] = pois.slice(0,6);
+        // });
         pois = pois.concat.apply(pois, results);
+        //---------RESOLVER ESTO--------
+        pois.sort(function(a, b) {
+            return b.rating - a.rating;
+        });
+        pois = pois.slice(0,userInfo.days*6);
+        //-------------------------------
         getDetails(pois,function (pois_details) {
             getClusters(pois_details,userInfo.days,function (clusters) {
                 getTours(clusters,userInfo.location,function (results) {
@@ -70,7 +82,6 @@ app.get('/pois',function (req,res) {
 
 function getDetails(pois,callback){
     var promises=[];
-
     for(var i in pois){
         if (pois[i].rating !== undefined){
             promises.push(
@@ -128,10 +139,7 @@ function getTours(clusters,userLocation,callback) {
         n = n == keys.length ? 0 : n ;
 
         //--------RESOLVER ESTO LUEGO---------
-        cluster.sort(function(a, b) {
-            return b.rating - a.rating;
-        });
-        clusters[index] = cluster.slice(0,6);
+        // clusters[index] = cluster.slice(0,6);
         clusters[index].unshift({location:userLocation});
         //------------------------------------
         promises.push(new Promise(function (resolve) {
