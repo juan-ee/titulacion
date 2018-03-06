@@ -18,9 +18,10 @@
       //     return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
       // }
 	  function initMap() {
+          var currentWindow;
 	      array = <%-JSON.stringify(array)%>;
           userLocation=array[0][0].poi.location;
-          colours=['F7FE2E','2efe6c','2ee5fe','fec32e','2efeaa'];
+          colours=['F7FE2E','2efe6c','2ee5fe','ff99ff','FE422E','993399'];
           var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 15,
             center: userLocation
@@ -38,12 +39,35 @@
               var n=1;
               for(i=1;i<schedule.length;i++){
                   if (schedule[i].poi) {
-                      new google.maps.Marker({
+
+                      var infowindow = new google.maps.InfoWindow({
+                          content: `
+                                    <h3>${schedule[i].poi.name}</h3>
+                                    <p><b>Hora de llegada: </b>${schedule[i].start}</p>
+                                    <p><b>Hora de salida: </b>${schedule[i].end}</p>
+                                    <p><b>Sitio web: </b><a href="${schedule[i].poi.website}" target="_blank">${schedule[i].poi.website}</a></p>
+                                    <!--<p><b>Detalles Google: </b><a href="${schedule[i].poi.url}" target="_blank">${schedule[i].poi.url}</a></p>-->
+                                    <p><a href="${schedule[i].poi.url}" target="_blank">Detalles de Google</a></p>
+                            `
+                      });
+
+                      var marker = new google.maps.Marker({
                             position: schedule[i].poi.location,
                             //icon: tour[j].icon,
                             icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+n+'|'+colours[j],
                             map: map
                       });
+
+                      google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
+                          return function() {
+                              infowindow.setContent(content);
+                              infowindow.open(map,marker);
+                              if(currentWindow){
+                                  currentWindow.close()
+                              }
+                              currentWindow = infowindow;
+                          };
+                      })(marker,infowindow.content,infowindow));
                       n++;
                   } else if (schedule[i].route) {
                           new google.maps.Polyline({
@@ -62,5 +86,3 @@
     </script>	
   </body>
 </html>
-
-<!-- porque alado tuyo me siento tan vulnerable; antes pensaba que era una jodida piedra que jamás sentiría amor, ahora soy un humano con una fuga tremenda de amor; tú abriste esa fuga y no sé si exista manera alguna de frenarla. En fin, tú podrías ser mi destrucción; has sido la única extravagancia que me ha sacado fuera de mis límites.-->

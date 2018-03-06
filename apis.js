@@ -10,7 +10,8 @@ module.exports = {
                     radius:2000,
                     type:type,
                     name:type,
-                    key:'AIzaSyD4qbkCAmjG4kObzEXT9gnzPGHel3Tuk44'
+                    // key:'AIzaSyD4qbkCAmjG4kObzEXT9gnzPGHel3Tuk44',
+                    key:'AIzaSyB8-GllalpxSUubV2qgh0rhba-wsKE5t3c'
                 },
                 json: true
             }).then(function (resp) {
@@ -23,7 +24,8 @@ module.exports = {
                 uri:'https://maps.googleapis.com/maps/api/place/details/json',
                 qs: {
                     placeid: placeid,
-                    key:'AIzaSyD4qbkCAmjG4kObzEXT9gnzPGHel3Tuk44'
+                    // key:'AIzaSyD4qbkCAmjG4kObzEXT9gnzPGHel3Tuk44',
+                    key:'AIzaSyB8-GllalpxSUubV2qgh0rhba-wsKE5t3c'
                 },
                 json: true
             }).then(function (resp) {
@@ -38,6 +40,18 @@ module.exports = {
                 delete poi.scope;
                 delete poi.types;
                 poi.expected_time = getExpectedTime();
+                //adjust opening hours
+                try {
+                    const periods = poi.opening_hours.periods;
+                    var newPeriods = new Array(7);
+                    for (var i in periods){
+                        newPeriods[periods[i].open.day] = {
+                            open:periods[i].open.time,
+                            close:periods[i].close.time,
+                        }
+                    }
+                    poi.opening_hours.periods = newPeriods;
+                }catch (err){}
                 callback(poi);
             });
     },
