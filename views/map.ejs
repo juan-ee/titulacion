@@ -20,6 +20,7 @@
 	  function initMap() {
           var currentWindow;
 	      array = <%-JSON.stringify(array)%>;
+          restaurants = <%-JSON.stringify(restaurants)%>;
           userLocation=array[0][0].poi.location;
           colours=['F7FE2E','2efe6c','2ee5fe','ff99ff','FE422E','993399'];
           var map = new google.maps.Map(document.getElementById('map'), {
@@ -78,7 +79,37 @@
                   }
 
               }
-		}								   				
+		}
+
+		restaurants.forEach(function (restaurant) {
+            var infowindow = new google.maps.InfoWindow({
+                content: `
+                                    <h3>Recomendación para el almuerzo</h3>
+                                    <p><b>Restaurante: </b>${restaurant.name}</p>
+                                    <p><a href="${restaurant.url}" target="_blank">Detalles de Google</a></p>
+                            `
+            });
+
+            var marker = new google.maps.Marker({
+                position: restaurant.geometry.location,
+                icon: restaurant.icon,
+                // icon: 'https://cdn0.iconfinder.com/data/icons/hotels-b-b-and-cabins/50/Lunch-64.png',
+                map: map
+            });
+
+            google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
+                return function() {
+                    infowindow.setContent(content);
+                    infowindow.open(map,marker);
+                    if(currentWindow){
+                        currentWindow.close()
+                    }
+                    currentWindow = infowindow;
+                };
+            })(marker,infowindow.content,infowindow));
+
+        });
+
       }
     </script>
     <script async defer	

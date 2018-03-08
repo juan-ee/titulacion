@@ -1,15 +1,15 @@
 const request = require('request-promise');
 
 module.exports = {
-    getPois: function (location,type,callback) {
+    getPois: function (location,radius,type,callback) {
         request(
             {
                 uri:'https://maps.googleapis.com/maps/api/place/nearbysearch/json',
                 qs: {
                     location: `${location.lat},${location.lng}`,
-                    radius:2000,
+                    radius:radius,
                     type:type,
-                    // name:type,
+                    name:type,
                     // key:'AIzaSyD4qbkCAmjG4kObzEXT9gnzPGHel3Tuk44',
                     key:'AIzaSyB8-GllalpxSUubV2qgh0rhba-wsKE5t3c'
                 },
