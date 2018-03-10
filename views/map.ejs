@@ -10,6 +10,11 @@
   </head>
   <body>
     <h3>My Google Maps Demo</h3>
+    <div>
+        <h2>....</h2>
+        <img src="/restaurant.png" alt="">
+        <h2>....</h2>
+    </div>
     <div id="map"></div>
     <script>
       // function htmlDecode(input){
@@ -54,7 +59,6 @@
 
                       var marker = new google.maps.Marker({
                             position: schedule[i].poi.location,
-                            //icon: tour[j].icon,
                             icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+n+'|'+colours[j],
                             map: map
                       });
@@ -92,8 +96,7 @@
 
             var marker = new google.maps.Marker({
                 position: restaurant.geometry.location,
-                icon: restaurant.icon,
-                // icon: 'https://cdn0.iconfinder.com/data/icons/hotels-b-b-and-cabins/50/Lunch-64.png',
+                icon: '/restaurant.png',
                 map: map
             });
 
