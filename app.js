@@ -166,7 +166,6 @@ function getTours(clusters,userLocation,callback) {
             const parameters = {
                 pois:clusters[i],
                 date:date,
-                totalCities:clusters[i].length,
                 timeMatrix:matrixes[i],
                 mutation_rate: 0.03,
                 sizePopulation:clusters[i].length*clusters[i].length,
