@@ -55,7 +55,7 @@ module.exports = {
                 callback(poi);
             });
     },
-    getMatrix: function (pois,key,callback) {
+    getTimeMatrix: function (pois,key,callback) {
         var matrix = [new Array(pois.length)];
         var promises = [];
         for(var i=0; i<pois.length-1; i++){
@@ -102,7 +102,7 @@ function getRoute(key,origin,destination,callback){
         }).then(function (resp) {
             const route=resp.routes[0];
             obj = {
-                distance:route.legs[0].distance.value,
+                // distance:route.legs[0].distance.value,
                 duration:route.legs[0].duration.value / 60,
                 points:route.overview_polyline.points
             };

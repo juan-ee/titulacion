@@ -147,7 +147,7 @@ function getTours(clusters,userLocation,callback) {
         clusters[index].unshift({location:userLocation});
         //------------------------------------
         promises.push(new Promise(function (resolve) {
-            api.getMatrix(clusters[index],keys[n],function (matrix) {
+            api.getTimeMatrix(clusters[index],keys[n],function (matrix) {
                 resolve(matrix);
             });
         }));
@@ -164,10 +164,10 @@ function getTours(clusters,userLocation,callback) {
         for(var i in matrixes){
             date.setDate(date.getDate()+1);
             const parameters = {
-                baseRoute:clusters[i],
+                pois:clusters[i],
                 date:date,
                 totalCities:clusters[i].length,
-                distanceMatrix:matrixes[i],
+                timeMatrix:matrixes[i],
                 mutation_rate: 0.03,
                 sizePopulation:clusters[i].length*clusters[i].length,
                 totalGenerations:10*clusters[i].length
