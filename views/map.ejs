@@ -72,6 +72,7 @@
                   } else if (schedule[i].route) {
                           new google.maps.Polyline({
                               path: google.maps.geometry.encoding.decodePath(schedule[i].route),
+                              strokeWeight: 7,
                               strokeColor: "#"+colours[j],
                               map: map
                           });
@@ -85,6 +86,7 @@
                 content: `
                                     <h3>Recomendación para el almuerzo</h3>
                                     <p><b>Restaurante: </b>${restaurant.name}</p>
+                                    <p><b>Horario: </b>${restaurant.name}</p>
                                     <p><a href="${restaurant.url}" target="_blank">Detalles de Google</a></p>
                             `
             });
