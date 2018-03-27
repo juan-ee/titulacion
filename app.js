@@ -154,8 +154,8 @@ function getRestaurants(tours,callback){
             if(value.lunch){
                 promises.push(new Promise(
                     function (resolve) {
-                        api.getPois(value.location,30,'restaurant',function (result) {
-                            resolve(result);
+                        api.getPois(value.location,100,'restaurant',function (result) {
+                            resolve(result.splice(0,5));
                         });
                     }
                 ));

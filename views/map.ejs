@@ -44,11 +44,11 @@
                       var infowindow = new google.maps.InfoWindow({
                           content: `
                                     <h3>${schedule[i].poi.name}</h3>
-                                    <p><b>Hora de llegada: </b>${schedule[i].start}</p>
-                                    <p><b>Hora de salida: </b>${schedule[i].end}</p>
-                                    <p><b>Sitio web: </b><a href="${schedule[i].poi.website}" target="_blank">${schedule[i].poi.website}</a></p>
+                                    <p><b>Check-in Time: </b>${schedule[i].start}</p>
+                                    <p><b>Check-out Time: </b>${schedule[i].end}</p>
+                                    <p><b>Website: </b><a href="${schedule[i].poi.website}" target="_blank">${schedule[i].poi.website}</a></p>
                                     <!--<p><b>Detalles Google: </b><a href="${schedule[i].poi.url}" target="_blank">${schedule[i].poi.url}</a></p>-->
-                                    <p><a href="${schedule[i].poi.url}" target="_blank">Detalles de Google</a></p>
+                                    <p><a href="${schedule[i].poi.url}" target="_blank">Google Details</a></p>
                             `
                       });
 
@@ -84,9 +84,9 @@
 		restaurants.forEach(function (restaurant) {
             var infowindow = new google.maps.InfoWindow({
                 content: `
-                                    <h3>Recomendación para el almuerzo</h3>
-                                    <p><b>Restaurante: </b>${restaurant.name}</p>
-                                    <p><b>Horario: </b>${restaurant.name}</p>
+                                    <h3>Lunch Time Recommendation</h3>
+                                    <p><b>Restaurant: </b>${restaurant.name}</p>
+                                    <p><b>Time: </b>${restaurant.start} - ${restaurant.end}</p>
                                     <p><a href="${restaurant.url}" target="_blank">Detalles de Google</a></p>
                             `
             });
