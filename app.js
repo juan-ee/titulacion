@@ -155,6 +155,10 @@ function getRestaurants(tours,callback){
                 promises.push(new Promise(
                     function (resolve) {
                         api.getPois(value.location,100,'restaurant',function (result) {
+                            result.map(function (restaurant) {
+                                restaurant.time = `${value.start} - ${value.end}`;
+                                return restaurant;
+                            });
                             resolve(result.splice(0,5));
                         });
                     }
