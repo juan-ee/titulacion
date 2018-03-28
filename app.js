@@ -150,16 +150,25 @@ function getTours(clusters,userLocation,callback) {
 function getRestaurants(tours,callback){
     promises = [];
     tours.forEach(function (tour) {
-        tour.forEach(function (value) {
+        tour.forEach(function (value,index,array) {
             if(value.lunch){
-                promises.push(new Promise(
-                    function (resolve) {
+                promises.push(new Promise(function (resolve) {
                         api.getPois(value.location,100,'restaurant',function (result) {
-                            result.map(function (restaurant) {
-                                restaurant.time = `${value.start} - ${value.end}`;
-                                return restaurant;
-                            });
-                            resolve(result.splice(0,5));
+                            if (result.length > 0){
+                                result.map(function (restaurant) {
+                                    restaurant.time = `${value.start} - ${value.end}`;
+                                    return restaurant;
+                                });
+                                resolve(result.splice(0,5));
+                            }else{
+                                api.getPois(array[array.indexOf(value)-2].poi.location,100,'restaurant',function (result) {
+                                    result.map(function (restaurant) {
+                                        restaurant.time = `${value.start} - ${value.end}`;
+                                        return restaurant;
+                                    });
+                                    resolve(result.splice(0,5));
+                                });
+                            }
                         });
                     }
                 ));
