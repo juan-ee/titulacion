@@ -9,9 +9,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "circular-json": "^0.5.9",
+    "dotenv": "^6.2.0",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
+    "kmeans-same-size": "1.0.1",
     "request": "^2.83.0",
     "request-promise": "^4.2.2"
+  },
+  "devDependencies": {
+    "prettier": "1.15.3"
   }
 }
