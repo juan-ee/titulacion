@@ -41,7 +41,7 @@ app.get("/pois", (req, res) => {
   }
   Promise.all(promises).then(results => {
     pois = pois.concat.apply(pois, results);
-    //---------RESOLVER ESTO--------
+    //---------TODO RESOLVER ESTO--------
     pois.sort((a, b) => b.rating - a.rating);
     pois = pois.slice(0, userInfo.days * 6);
     //-------------------------------
