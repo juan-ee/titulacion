@@ -2,7 +2,6 @@ const { it } = require("mocha");
 const { expect } = require("chai");
 const { createSandbox } = require("sinon");
 const rp = require("request-promise");
-const api = require("../api/google_api");
 const mock = require("./mock_objects");
 const { switchMap } = require("rxjs/operators");
 const { of } = require("rxjs");

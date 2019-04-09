@@ -33,14 +33,14 @@ function main(userInfo) {
     ),
     concatMap(tour => forkJoin(of(tour), getRestaurants(tour))),
     reduce(
-      (acc, [tour, restaurants]) => ({
-        tours: [...acc.tours, tour],
-        restaurants: [...acc.restaurants, ...restaurants]
-      }),
-      {
-        tours: [],
-        restaurants: []
-      }
+      (acc, [tour, restaurants]) => [
+        ...acc,
+        {
+          tour,
+          restaurants
+        }
+      ],
+      []
     )
   );
 }
@@ -140,14 +140,14 @@ function getRestaurants(tour) {
       ? tour[lunch_index - 1].location
       : tour[lunch_index + 1].location;
 
-  return api.getPois(location, 800, "restaurant").pipe(
+  return api.getPois(location, 500, "restaurant").pipe(
     map(results =>
       results
         .map(restaurant => ({
           ...restaurant,
           schedule: tour[lunch_index].schedule
         }))
-        .slice(0, 7)
+        .slice(0, 5)
     )
   );
 }
