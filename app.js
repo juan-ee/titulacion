@@ -19,7 +19,7 @@ app.get('*', (req, res) => {
 });
 
 
-app.post("/test", (req, res) => {
+app.post("/ttdp", (req, res) => {
   main(req.body).subscribe({
     next: results => res.json(results),
     error: err => res.status(500).json(err)
