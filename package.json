@@ -10,10 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "circular-json": "^0.5.9",
     "dot-object": "1.7.1",
     "dotenv": "^6.2.0",
-    "ejs": "^2.5.7",
     "express": "^4.16.2",
     "ga-tsp": "2.0.0",
     "kmeans-same-size": "1.0.1",
