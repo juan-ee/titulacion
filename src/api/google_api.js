@@ -13,7 +13,8 @@ module.exports = {
           radius: radius,
           type: type,
           name: type,
-          key: process.env.GOOGLE_API_KEY
+          key: process.env.GOOGLE_API_KEY,
+          language: "es-419"
         },
         json: true
       })
@@ -32,7 +33,8 @@ module.exports = {
         uri: process.env.GOOGLE_PLACES_DETAILS_URL,
         qs: {
           placeid: placeid,
-          key: process.env.GOOGLE_API_KEY
+          key: process.env.GOOGLE_API_KEY,
+          language: "es-419"
         },
         json: true
       })

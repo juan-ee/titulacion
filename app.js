@@ -23,7 +23,10 @@ app.get("*", (req, res) => {
 app.post("/ttdp", validate(req_body_val), (req, res) => {
   main(req.body).subscribe({
     next: results => res.status(201).json(results),
-    error: err => res.status(500).json(err)
+    error: err => {
+      console.log(err);
+      res.status(500).json(err)
+    }
   });
 });
 

@@ -10,7 +10,7 @@ module.exports = {
         categories: joi.array().items(joi.string()),
         startDate: joi.date().required(),
         travelSchedule: joi.object().keys({
-            start: joi.string().regex(/^[0-9]{4}$/).required(),
+            start: joi.string().regex(/[0-9]{4}/).required(),
             end: joi.string().regex(/[0-9]{4}/).required(),
         }).default({
             start: "0900",
