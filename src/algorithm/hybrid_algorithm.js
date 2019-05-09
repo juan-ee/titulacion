@@ -12,8 +12,8 @@ const {
   concatMap,
   scan,
   takeWhile,
-  switchMap
-  //filter
+  switchMap,
+  filter
 } = require("rxjs/operators");
 
 require("dotenv").config();
@@ -92,9 +92,12 @@ function getClusters(pois, totalDays) {
 function getDetails(cluster, travelDate) {
   return from(cluster).pipe(
     concatMap(poi => api.getDetails(poi.place_id)),
-    //filter(poi => get(poi, `opening_hours.periods[${travelDate.day()}]`) !== undefined), // TODO: uncomment this in case of using another API
+    filter(
+      poi =>
+        get(poi, `opening_hours.periods[${travelDate.day()}]`) !== undefined
+    ), // TODO: uncomment this in case of using another API
     scan((new_cluster, x) => [...new_cluster, x], []),
-    takeWhile(new_cluster => new_cluster.length <= 7),
+    takeWhile(new_cluster => new_cluster.length <= 8),
     reduce((_, new_cluster) => new_cluster)
   );
 }
@@ -126,7 +129,23 @@ function getTour(pois, userInfo, travelDate) {
       last_index =
         tour[last_index].type === "poi" ? last_index + 1 : last_index;
 
-      return tour.slice(0, last_index);
+      const new_tour = tour.slice(0, last_index);
+      const last = new_tour.length - 1;
+
+      if (
+        Math.abs(
+          Number(
+            get(new_tour, `[${last}].schedule.end`).replace(":", "") >
+              Number(userInfo.travelSchedule.end)
+          )
+        )
+      )
+        new_tour[last].schedule.end = `${userInfo.travelSchedule.end.substr(
+          0,
+          2
+        )}:${userInfo.travelSchedule.end.substr(2, 4)}`;
+
+      return new_tour;
     })
   );
 }
@@ -160,3 +179,26 @@ module.exports = {
   getDetails,
   getTour
 };
+
+// return getPois(userInfo.location, userInfo.categories).pipe(
+//     switchMap(pois => getClusters(pois, userInfo.totalDays)),
+//     concatMap(clusters => from(clusters)),
+//     mergeMap((cluster, index) => {
+//         const travel_date = start_date.clone().add(index, "day");
+//
+//         return getDetails(cluster, travel_date);
+//     }),
+//     map(pois => [{ location: userInfo.location }, ...pois]),
+//
+//     concatMap(cluster => forkJoin(of(cluster), api.getTimeMatrix(cluster))),
+//     reduce(
+//         (acc, [cluster, timeMatrix]) => [
+//             ...acc,
+//             {
+//                 cluster,
+//                 timeMatrix
+//             }
+//         ],
+//         []
+//     )
+// );
