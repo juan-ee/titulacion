@@ -92,10 +92,7 @@ function getClusters(pois, totalDays) {
 function getDetails(cluster, travelDate) {
   return from(cluster).pipe(
     concatMap(poi => api.getDetails(poi.place_id)),
-    filter(
-      poi =>
-        get(poi, `opening_hours.periods[${travelDate.day()}]`) !== undefined
-    ), // TODO: uncomment this in case of using another API
+    // filter(poi => get(poi, `opening_hours.periods[${travelDate.day()}]`) !== undefined), // TODO: uncomment this in case of using another API
     scan((new_cluster, x) => [...new_cluster, x], []),
     takeWhile(new_cluster => new_cluster.length <= 8),
     reduce((_, new_cluster) => new_cluster)
