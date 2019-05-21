@@ -126,23 +126,10 @@ function getTour(pois, userInfo, travelDate) {
       last_index =
         tour[last_index].type === "poi" ? last_index + 1 : last_index;
 
-      const new_tour = tour.slice(0, last_index);
-      const last = new_tour.length - 1;
-
-      if (
-        Math.abs(
-          Number(
-            get(new_tour, `[${last}].schedule.end`).replace(":", "") >
-              Number(userInfo.travelSchedule.end)
-          )
-        )
-      )
-        new_tour[last].schedule.end = `${userInfo.travelSchedule.end.substr(
-          0,
-          2
-        )}:${userInfo.travelSchedule.end.substr(2, 4)}`;
-
-      return new_tour;
+      return _finishTour(
+        tour.slice(0, last_index),
+        userInfo.travelSchedule.end
+      );
     })
   );
 }
@@ -169,7 +156,29 @@ function getRestaurants(tour) {
   );
 }
 
+function _finishTour(new_tour, endTour) {
+  const last = new_tour.length - 1;
+  const limit = Number(endTour);
+  const start_poi = Number(
+    get(new_tour, `[${last}].schedule.start`).replace(":", "")
+  );
+
+  if (start_poi > limit) {
+    const last_route = new_tour[last - 1];
+    new_tour = new_tour.slice(0, last - 1);
+    new_tour[new_tour.length-1].schedule.end = last_route.schedule.end;
+  } else {
+    new_tour[last].schedule.end = `${endTour.substr(0, 2)}:${endTour.substr(
+      2,
+      4
+    )}`;
+  }
+
+  return new_tour;
+}
+
 module.exports = {
+  _finishTour,
   main,
   getPois,
   getClusters,
